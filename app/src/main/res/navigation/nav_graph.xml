@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/initFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.nooblabs.conduit.ui.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginToRegister"
+            app:destination="@id/registerFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_loginSuccess"-->
+<!--            app:destination="@id/feedFragment" />-->
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.nooblabs.conduit.ui.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerToLogin"
+            app:destination="@id/loginFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_registerSuccess"-->
+<!--            app:destination="@id/feedFragment" />-->
+    </fragment>
+    <fragment
+        android:id="@+id/initFragment"
+        android:name="com.nooblabs.conduit.ui.InitFragment"
+        android:label="fragment_init"
+        tools:layout="@layout/fragment_init" >
+        <action
+            android:id="@+id/action_noUserFound"
+            app:destination="@id/loginFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_userFound"-->
+<!--            app:destination="@id/feedFragment" />-->
+    </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/feedFragment"-->
+<!--        android:name="com.nooblabs.conduit.ui.FeedFragment"-->
+<!--        android:label="fragment_feed"-->
+<!--        tools:layout="@layout/fragment_feed" />-->
+</navigation>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="article"
+            type="com.nooblabs.conduit.models.Article" />
+
+        <variable
+            name="onArticleSelectedListener"
+            type="com.nooblabs.conduit.OnArticleSelectedListener" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:contentPadding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:profileImage="@{article.author.image}" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <com.elyeproj.loaderviewlibrary.LoaderTextView
+                        android:id="@+id/textView5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> onArticleSelectedListener.onAuthorClicked(article.author.username)}"
+                        android:text="@{article.author.username}"
+                        app:width_weight="0.3" />
+
+                    <com.elyeproj.loaderviewlibrary.LoaderTextView
+                        android:id="@+id/textView6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        app:date="@{article.createdAt}"
+                        app:width_weight="0.4" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/button12"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@{article.favorited ? @drawable/ic_star_on_24dp : @drawable/ic_star_border_black_24dp}"
+                    android:text="@{Integer.toString(article.favoritesCount)}"
+                    android:onClick="@{() -> onArticleSelectedListener.onFavorite(article)}"/>
+            </LinearLayout>
+
+
+            <com.elyeproj.loaderviewlibrary.LoaderTextView
+                android:id="@+id/textView16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@{article.title}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:width_weight="0.4" />
+
+            <com.elyeproj.loaderviewlibrary.LoaderTextView
+                android:id="@+id/textView17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:minLines="2"
+                android:text="@{article.description}"
+                app:width_weight="0.8" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

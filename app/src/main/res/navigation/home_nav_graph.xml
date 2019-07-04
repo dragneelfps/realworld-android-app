@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/feedFragment2">
+
+    <fragment
+        android:id="@+id/feedFragment2"
+        android:name="com.nooblabs.conduit.ui.FeedFragment"
+        android:label="fragment_feed"
+        tools:layout="@layout/fragment_feed" />
+
+    <action android:id="@+id/action_global_feedFragment" app:destination="@id/feedFragment2" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.nooblabs.conduit.ui.ProfileFragment"
+        android:label="ProfileFragment" /><action android:id="@+id/action_global_profileFragment" app:destination="@id/profileFragment"/>
+    <fragment
+        android:id="@+id/articleDetailFragment"
+        android:name="com.nooblabs.conduit.ui.ArticleDetailFragment"
+        android:label="ArticleDetailFragment" >
+        <argument
+            android:name="articleSlug"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.nooblabs.conduit.ui.UserFragment"
+        android:label="UserFragment" >
+        <argument
+            android:name="username"
+            app:argType="string" />
+    </fragment>
+    <action android:id="@+id/action_global_userDetails" app:destination="@id/userFragment" />
+    <action android:id="@+id/action_global_articleDetailFragment" app:destination="@id/articleDetailFragment" />
+
+
+</navigation>
