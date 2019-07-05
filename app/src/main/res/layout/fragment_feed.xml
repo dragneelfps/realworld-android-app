@@ -11,7 +11,7 @@
 
         <variable
             name="articleListAdapter"
-            type="com.nooblabs.conduit.adapters.ArticleListAdapter" />
+            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
 
         <variable
             name="feedViewModel"
@@ -22,12 +22,8 @@
             type="android.view.View.OnClickListener" />
 
         <variable
-            name="articleListTypeListener"
-            type="android.widget.AdapterView.OnItemSelectedListener" />
-
-        <variable
-            name="scrollListener"
-            type="androidx.recyclerview.widget.RecyclerView.OnScrollListener" />
+            name="lifecycleOwner2"
+            type="androidx.lifecycle.LifecycleOwner" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,66 +31,55 @@
         android:layout_height="match_parent"
         tools:context=".ui.FeedFragment">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/homeToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <!--        <androidx.recyclerview.widget.RecyclerView-->
+        <!--            android:id="@+id/recyclerView"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:adapter="@{articleListAdapter}"-->
+        <!--            android:scrollbarSize="8dp"-->
+        <!--            android:scrollbars="vertical"-->
+        <!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+        <!--            app:layout_constraintBottom_toTopOf="@+id/progressBar3"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/spinner"-->
+        <!--            app:scrollListener="@{scrollListener}">-->
 
-        <Spinner
-            android:id="@+id/spinner"
+        <!--        </androidx.recyclerview.widget.RecyclerView>-->
+
+        <com.nooblabs.conduit.ui.views.LoadingListView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:entries="@array/article_list_types"
-            android:spinnerMode="dialog"
-            app:data="@{R.array.article_list_types}"
-            app:itemResource="@{R.layout.spinner_item}"
-            app:itemSelectionListener="@{articleListTypeListener}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/homeToolbar" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:adapter="@{articleListAdapter}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spinner"
-            app:scrollListener="@{scrollListener}">
-
-        </androidx.recyclerview.widget.RecyclerView>
+            app:layout_constraintTop_toTopOf="parent"
+            app:adapter="@{articleListAdapter}"
+            app:lifecycleOwner="@{lifecycleOwner2}"
+            app:loading="@{feedViewModel.loading}"
+            app:loadingListener="@{feedViewModel.loadingListener}" />
 
         <TextView
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No articles found"
+            android:text="Empty Feed"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:visibility="@{!feedViewModel.loading &amp;&amp; feedViewModel.articlesData.empty ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/homeToolbar" />
-
-        <ProgressBar
-            android:id="@+id/progressBar3"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="@{feedViewModel.loading ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <!--        <ProgressBar-->
+        <!--            android:id="@+id/progressBar3"-->
+        <!--            style="?android:attr/progressBarStyle"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:visibility="@{feedViewModel.loading ? View.VISIBLE : View.GONE}"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent" />-->
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionButton2"

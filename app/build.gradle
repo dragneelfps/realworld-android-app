@@ -18,7 +18,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -97,6 +97,9 @@ dependencies {
 
     //Loader TextView/ImageView
     implementation 'com.elyeproj.libraries:loaderviewlibrary:2.0.0'
+
+    //MEditText
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
 
 
 }

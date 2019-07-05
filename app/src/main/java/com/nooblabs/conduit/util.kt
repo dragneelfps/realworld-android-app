@@ -6,26 +6,20 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.widget.*
 import androidx.core.content.getSystemService
-import androidx.core.view.get
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.TypeConverter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.navigation.NavigationView
 import com.nooblabs.conduit.models.Article
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import kotlinx.serialization.list
-import kotlinx.serialization.serializer
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import timber.log.Timber
-import java.time.format.DateTimeFormatter
 
 fun Context?.toast(message: CharSequence) = if (this != null)
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show() else Unit
@@ -93,7 +87,12 @@ fun ChipGroup.bindChips(chipsData: LiveData<List<String>>, lifecycleOwner: Lifec
 
     chipsData.observe(lifecycleOwner, Observer {  newData ->
         removeAllViews()
-        newData.map { Chip(context).apply { text = it } }.forEach { addView(it) }
+        newData.map {
+            Chip(context).apply {
+                text = it
+                isCheckable = true
+            }
+        }.forEach { addView(it) }
     })
 }
 
@@ -112,6 +111,12 @@ fun Spinner.initSpinner(resource: Int, data: Int) {
 @BindingAdapter("itemSelectionListener")
 fun Spinner.setItemSelectionListener(listener: AdapterView.OnItemSelectedListener) {
     onItemSelectedListener = listener
+}
+
+@BindingAdapter("navItemSelectedListener")
+fun NavigationView.setNavItemSelectedListener(listener: NavigationView.OnNavigationItemSelectedListener) {
+    Timber.d("HERE434")
+    setNavigationItemSelectedListener(listener)
 }
 
 @BindingAdapter("scrollListener")
@@ -133,3 +138,12 @@ enum class ListType {
     ALL, FEED
 }
 
+enum class LoadType {
+    RELOAD, MORE
+}
+
+
+interface OnUserProfileListener {
+    fun toggleFollow()
+    fun onEditProfile()
+}

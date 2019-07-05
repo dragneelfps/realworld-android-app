@@ -2,12 +2,13 @@ package com.nooblabs.conduit.service
 
 import com.nooblabs.conduit.models.Article
 import com.nooblabs.conduit.models.Profile
+import com.nooblabs.conduit.service.api.getAptError
 import com.nooblabs.conduit.service.api.networkService
+import com.nooblabs.conduit.service.api.requests.ArticleCreateRequest
 import com.nooblabs.conduit.service.api.requests.LoginRequest
 import com.nooblabs.conduit.service.api.requests.RegistrationRequest
-import com.nooblabs.conduit.service.api.responses.UserResponse
-import com.nooblabs.conduit.service.api.getAptError
 import com.nooblabs.conduit.service.api.requests.UserUpdateRequest
+import com.nooblabs.conduit.service.api.responses.UserResponse
 
 object NetworkRepository {
 
@@ -58,7 +59,14 @@ object NetworkRepository {
     ): List<Article> {
         val authHeader = if (token != null) "Token $token" else null
         val response =
-            networkService.getArticles(authHeader, tag, author, favoritedBy, limit, offset).await()
+            networkService.getArticles(
+                token = authHeader,
+                tag = tag,
+                author = author,
+                favoritedBy = favoritedBy,
+                limit = limit,
+                offset = offset
+            ).await()
         if (response.isSuccessful) {
             return response.body()!!.articles
         } else {
@@ -82,7 +90,7 @@ object NetworkRepository {
 
     suspend fun getFeed(token: String, offset: Int? = null): List<Article> {
         val authHeader = "Token $token"
-        val response = networkService.getFeed(authHeader, offset).await()
+        val response = networkService.getFeed(authHeader, offset = offset).await()
         if (response.isSuccessful) {
             return response.body()!!.articles
         } else {
@@ -116,6 +124,24 @@ object NetworkRepository {
                 networkService.unfollowUser(token, username).await()
         if (response.isSuccessful) {
             return response.body()!!.profile
+        } else {
+            throw getAptError(response.code(), response.errorBody()?.string())
+        }
+    }
+
+    suspend fun getTags(): List<String> {
+        val response = networkService.getTags().await()
+        if (response.isSuccessful) {
+            return response.body()!!.tags
+        } else {
+            throw getAptError(response.code(), response.errorBody()?.string())
+        }
+    }
+
+    suspend fun createArticle(token: String, request: ArticleCreateRequest): Article {
+        val response = networkService.createArticle(token, request).await()
+        if (response.isSuccessful) {
+            return response.body()!!.article
         } else {
             throw getAptError(response.code(), response.errorBody()?.string())
         }

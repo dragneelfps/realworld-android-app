@@ -2,25 +2,22 @@ package com.nooblabs.conduit.ui
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.nooblabs.conduit.OnArticleSelectedListener
-
+import com.nooblabs.conduit.OnUserProfileListener
 import com.nooblabs.conduit.R
 import com.nooblabs.conduit.adapters.ArticleListAdapter
 import com.nooblabs.conduit.databinding.FragmentUserBinding
 import com.nooblabs.conduit.models.Article
 import com.nooblabs.conduit.viewmodels.UserViewModel
-import kotlinx.android.synthetic.main.fragment_user.*
 
 
 class UserFragment : Fragment() {
@@ -43,12 +40,12 @@ class UserFragment : Fragment() {
                 }
 
                 override fun onArticleSelected(article: Article) {
-                    val action = ArticleDetailFragmentDirections.actionGlobalArticleDetailFragment(article.slug)
+                    val action = UserFragmentDirections.actionUserArticleDetail(article.slug)
                     findNavController().navigate(action)
                 }
 
                 override fun onAuthorClicked(username: String) {
-                    val action = UserFragmentDirections.actionGlobalUserDetails(username)
+                    val action = UserFragmentDirections.actionUserToUser(username)
                     findNavController().navigate(action)
                 }
             }
@@ -64,6 +61,8 @@ class UserFragment : Fragment() {
         binding.userViewModel = userViewModel
         binding.articleAdapter = userArticleAdapter
 
+        binding.userProfileListener = userProfileListener
+
         binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
@@ -75,16 +74,16 @@ class UserFragment : Fragment() {
         userViewModel.userArticlesData.observe(viewLifecycleOwner, Observer { userArticles ->
             userArticleAdapter.setArticles(userArticles)
         })
-
         userViewModel.loadUserData(args.username)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        (activity as AppCompatActivity).setSupportActionBar(userToolbar)
-        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        userToolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+    private val userProfileListener = object : OnUserProfileListener {
+        override fun toggleFollow() {
+            userViewModel.toggleFollow()
+        }
+
+        override fun onEditProfile() {
+            findNavController().navigate(R.id.profileActivity)
         }
     }
 

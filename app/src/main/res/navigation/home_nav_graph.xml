@@ -9,31 +9,55 @@
         android:id="@+id/feedFragment2"
         android:name="com.nooblabs.conduit.ui.FeedFragment"
         android:label="fragment_feed"
-        tools:layout="@layout/fragment_feed" />
+        tools:layout="@layout/fragment_feed">
+        <action
+            android:id="@+id/action_feedFragment2_to_userProfileActivity2"
+            app:destination="@id/userProfileActivity" />
+        <action
+            android:id="@+id/action_articleDetail"
+            app:destination="@id/articleActivity" />
+    </fragment>
 
-    <action android:id="@+id/action_global_feedFragment" app:destination="@id/feedFragment2" />
+    <action
+        android:id="@+id/action_global_feedFragment"
+        app:destination="@id/feedFragment2" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.nooblabs.conduit.ui.ProfileFragment"
-        android:label="ProfileFragment" /><action android:id="@+id/action_global_profileFragment" app:destination="@id/profileFragment"/>
-    <fragment
-        android:id="@+id/articleDetailFragment"
-        android:name="com.nooblabs.conduit.ui.ArticleDetailFragment"
-        android:label="ArticleDetailFragment" >
-        <argument
-            android:name="articleSlug"
-            app:argType="string" />
-    </fragment>
-    <fragment
-        android:id="@+id/userFragment"
-        android:name="com.nooblabs.conduit.ui.UserFragment"
-        android:label="UserFragment" >
+        android:label="ProfileFragment" />
+    <action
+        android:id="@+id/action_global_profileFragment"
+        app:destination="@id/profileFragment" />
+    <activity
+        android:id="@+id/userProfileActivity"
+        android:name="com.nooblabs.conduit.UserProfileActivity"
+        android:label="UserProfileActivity"
+        tools:layout="@layout/activity_user_profile">
         <argument
             android:name="username"
             app:argType="string" />
+    </activity>
+    <activity
+        android:id="@+id/articleActivity"
+        android:name="com.nooblabs.conduit.ArticleActivity"
+        android:label="ArticleActivity">
+        <argument android:name="articleSlug" />
+    </activity>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.nooblabs.conduit.ui.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_search_to_userProfile"
+            app:destination="@id/userProfileActivity" />
+        <action
+            android:id="@+id/action_search_to_article"
+            app:destination="@id/articleActivity" />
     </fragment>
-    <action android:id="@+id/action_global_userDetails" app:destination="@id/userFragment" />
-    <action android:id="@+id/action_global_articleDetailFragment" app:destination="@id/articleDetailFragment" />
+    <action
+        android:id="@+id/action_global_searchFragment"
+        app:destination="@id/searchFragment" />
 
 
 </navigation>

@@ -2,7 +2,7 @@ package com.nooblabs.conduit.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import com.nooblabs.conduit.models.User
-import com.nooblabs.conduit.service.Service
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -11,15 +11,14 @@ class ProfileViewModel : BaseViewModel() {
 
     val currentUser = MutableLiveData<User?>()
 
-    val editMode = MutableLiveData(false)
-
-    val service = Service.get()
-
     val usernameData = MutableLiveData<String>()
     val emailData = MutableLiveData<String>()
     val bioData = MutableLiveData<String>()
 
-    fun loadUser() {
+    lateinit var onSaved: () -> Unit
+
+
+    override fun loadUser() {
         loading.postValue(true)
         scope.launch {
             val storedUser = service.getCurrentUser()
@@ -32,7 +31,6 @@ class ProfileViewModel : BaseViewModel() {
     }
 
     fun onSave() {
-        editMode.postValue(false)
         val username = usernameData.value
         val email = emailData.value
         val bio = bioData.value
@@ -42,11 +40,6 @@ class ProfileViewModel : BaseViewModel() {
             bio = bio
         )
     }
-
-    fun toggleEditingMode(mode: Boolean) {
-        editMode.postValue(mode)
-    }
-
     fun changeImage(imageUrl: String) {
         updateUser(image = imageUrl)
     }
@@ -74,6 +67,9 @@ class ProfileViewModel : BaseViewModel() {
                 currentUser.postValue(user)
                 if (user != null) {
                     updateView(user)
+                    launch(Dispatchers.Main) {
+                        onSaved()
+                    }
                 }
             } catch (e: Exception) {
                 Timber.e(e)

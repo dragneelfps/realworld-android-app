@@ -2,13 +2,6 @@ package com.nooblabs.conduit.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import com.nooblabs.conduit.models.User
-import com.nooblabs.conduit.service.api.ValidationException
-import com.nooblabs.conduit.service.NetworkRepository
-import com.nooblabs.conduit.service.PersistenceRepository
-import com.nooblabs.conduit.service.Service
-import com.nooblabs.conduit.service.api.ApiException
-import com.nooblabs.conduit.service.api.requests.LoginRequest
-import com.nooblabs.conduit.service.api.responses.UserResponse
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -24,7 +17,6 @@ class LoginViewModel : BaseViewModel() {
 
     lateinit var goToRegister: () -> Unit
 
-    val service = Service.get()
 
     fun onSubmit() {
 

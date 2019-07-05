@@ -2,11 +2,10 @@ package com.nooblabs.conduit.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-import java.lang.Exception
+import com.nooblabs.conduit.models.User
+import com.nooblabs.conduit.service.Service
+import kotlinx.coroutines.*
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel : ViewModel() {
@@ -24,10 +23,25 @@ abstract class BaseViewModel : ViewModel() {
 
     val loading = MutableLiveData(false)
 
+    val service = Service.get()
+
+    val currentUserData = MutableLiveData<User>()
+
     override fun onCleared() {
         super.onCleared()
         loading.postValue(false)
         cancelAllRequests()
+    }
+
+    open fun loadUser() {
+        scope.launch {
+            try {
+                currentUserData.postValue(service.getCurrentUser())
+            } catch (e: Exception) {
+                Timber.e(e)
+                error.postValue(e)
+            }
+        }
     }
 
 }

@@ -1,44 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <!--        <variable-->
+        <!--            name="navigationListener"-->
+        <!--            type="com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener" />-->
+
         <variable
-            name="navigationListener"
-            type="com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener" />
+            name="homeViewModel"
+            type="com.nooblabs.conduit.viewmodels.HomeViewModel" />
+
+        <variable
+            name="drawerNavItemListener"
+            type="com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener" />
+
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/home_drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".HomeActivity">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <fragment
-            android:id="@+id/home_nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/home_nav_graph" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigationView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:itemHorizontalTranslationEnabled="false"
-            app:itemTextColor="#FFFFFF"
-            app:labelVisibilityMode="unlabeled"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/home_nav_menu"
-            android:onNavigationItemSelectedListener="@{navigationListener}"/>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/homeToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <fragment
+                android:id="@+id/home_nav_host_fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/homeToolbar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/home_nav_graph" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:menu="@menu/home_drawer_nav_menu"
+            app:navItemSelectedListener="@{drawerNavItemListener}" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
 </layout>

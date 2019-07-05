@@ -1,21 +1,20 @@
 package com.nooblabs.conduit.ui
 
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
-import com.nooblabs.conduit.MainActivity
 import com.nooblabs.conduit.R
 import com.nooblabs.conduit.databinding.FragmentProfileBinding
 import com.nooblabs.conduit.viewmodels.ProfileViewModel
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 
 class ProfileFragment : Fragment() {
@@ -27,7 +26,11 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        profileViewModel = ViewModelProviders.of(this)[ProfileViewModel::class.java]
+        profileViewModel = ViewModelProviders.of(this)[ProfileViewModel::class.java].apply {
+            onSaved = {
+                Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         val binding = DataBindingUtil.inflate<FragmentProfileBinding>(
             inflater,
@@ -35,9 +38,6 @@ class ProfileFragment : Fragment() {
             container,
             false
         )
-        binding.onLoginClick = View.OnClickListener {
-            startActivity(Intent(activity, MainActivity::class.java))
-        }
 
         binding.onProfileImageClick = View.OnClickListener {
             showChangeImageDialog()
@@ -51,6 +51,8 @@ class ProfileFragment : Fragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
 
+        setHasOptionsMenu(true)
+
         return binding.root
     }
 
@@ -58,6 +60,31 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         profileViewModel.loadUser()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val activity = activity as AppCompatActivity
+        activity.setSupportActionBar(profileToolbar)
+        activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        profileToolbar.setNavigationOnClickListener {
+            activity.finish()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.profile_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.item_save -> {
+                profileViewModel.onSave()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun showChangeImageDialog() {

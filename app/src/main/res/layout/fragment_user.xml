@@ -2,12 +2,18 @@
 <layout>
 
     <data>
+
+        <import type="android.view.View" />
         <variable
             name="userViewModel"
             type="com.nooblabs.conduit.viewmodels.UserViewModel" />
         <variable
             name="articleAdapter"
-            type="com.nooblabs.conduit.adapters.ArticleListAdapter" />
+            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
+
+        <variable
+            name="userProfileListener"
+            type="com.nooblabs.conduit.OnUserProfileListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,17 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.UserFragment">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/userToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/darker_gray"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -39,7 +34,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userToolbar">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -61,7 +56,18 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_add_black_24dp"
                 android:text="@{userViewModel.profileData.following ? `Unfollow` : `Follow`}"
-                android:onClick="@{() -> userViewModel.toggleFollow()}"/>
+                android:onClick="@{() -> userProfileListener.toggleFollow()}"
+                android:visibility="@{userViewModel.isMe ? View.GONE : View.VISIBLE }" />
+
+            <Button
+                android:id="@+id/button12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_edit_black_24dp"
+                android:text="Edit Profile"
+                android:onClick="@{() -> userProfileListener.onEditProfile()}"
+                android:visibility="@{userViewModel.isMe ? View.VISIBLE : View.GONE }" />
+
 
         </LinearLayout>
 
@@ -73,6 +79,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:adapter="@{articleAdapter}"/>
+            app:adapter="@{articleAdapter}"
+            android:scrollbarSize="8dp"
+            android:scrollbars="vertical" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

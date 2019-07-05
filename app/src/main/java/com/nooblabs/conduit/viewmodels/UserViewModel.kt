@@ -3,7 +3,6 @@ package com.nooblabs.conduit.viewmodels
 import androidx.lifecycle.MutableLiveData
 import com.nooblabs.conduit.models.Article
 import com.nooblabs.conduit.models.Profile
-import com.nooblabs.conduit.service.Service
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -13,12 +12,19 @@ class UserViewModel : BaseViewModel() {
 
     val userArticlesData = MutableLiveData<List<Article>>()
 
-    val service = Service.get()
+    val isMe = MutableLiveData(false)
 
     fun loadUserData(username: String) {
         loading.postValue(true)
         scope.launch {
             try {
+
+                val currentUser = service.getCurrentUser()
+                if (currentUser != null && currentUser.username == username) {
+                    isMe.postValue(true)
+                } else {
+                    isMe.postValue(false)
+                }
                 val profile = service.getProfile(username)
                 profileData.postValue(profile)
                 val userArticles = service.getArticles(author = profile.username)
@@ -43,6 +49,5 @@ class UserViewModel : BaseViewModel() {
             }
         }
     }
-
 
 }

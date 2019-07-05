@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_nav_graph.xml"
+    app:startDestination="@id/userFragment2">
+
+    <fragment
+        android:id="@+id/userFragment2"
+        android:name="com.nooblabs.conduit.ui.UserFragment"
+        android:label="UserFragment">
+        <argument
+            android:name="username"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_userArticleDetail"
+            app:destination="@id/articleActivity2" />
+        <action
+            android:id="@+id/action_userToUser"
+            app:destination="@id/userProfileActivity2" />
+    </fragment>
+    <activity
+        android:id="@+id/articleActivity2"
+        android:name="com.nooblabs.conduit.ArticleActivity"
+        android:label="ArticleActivity">
+        <argument
+            android:name="articleSlug"
+            app:argType="string" />
+    </activity>
+    <activity
+        android:id="@+id/userProfileActivity2"
+        android:name="com.nooblabs.conduit.UserProfileActivity"
+        android:label="UserProfileActivity">
+        <argument
+            android:name="username"
+            app:argType="string" />
+    </activity>
+    <activity
+        android:id="@+id/profileActivity"
+        android:name="com.nooblabs.conduit.ProfileActivity"
+        android:label="activity_profile"
+        tools:layout="@layout/activity_profile" />
+</navigation>

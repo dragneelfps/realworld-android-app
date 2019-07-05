@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="java.util.List" />
+
+        <variable
+            name="searchViewModel"
+            type="com.nooblabs.conduit.viewmodels.SearchViewModel" />
+
+        <variable
+            name="lifeCycleOwner2"
+            type="androidx.lifecycle.LifecycleOwner" />
+
+        <variable
+            name="onTagClickListener"
+            type="com.google.android.material.chip.ChipGroup.OnCheckedChangeListener" />
+
+        <variable
+            name="articleAdapter"
+            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
+
+        <variable
+            name="loadingListener"
+            type="com.nooblabs.conduit.ui.views.LoadingListView.LoadingListener" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.SearchFragment">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/searchToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            app:title="Search By Tags"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipsData="@{searchViewModel.tagListData}"
+            app:lifecycleOwner="@{lifeCycleOwner2}"
+            app:singleSelection="true"
+            app:onCheckedChangeListener="@{onTagClickListener}" />
+
+        <!--        <androidx.recyclerview.widget.RecyclerView-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:layout_weight="1"-->
+        <!--            app:adapter="@{articleAdapter}"-->
+        <!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>-->
+
+        <com.nooblabs.conduit.ui.views.LoadingListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:adapter="@{articleAdapter}"
+            app:lifecycleOwner="@{lifeCycleOwner2}"
+            app:loading="@{searchViewModel.loading}"
+            app:loadingListener="@{searchViewModel.loadingListener}" />
+
+    </LinearLayout>
+</layout>

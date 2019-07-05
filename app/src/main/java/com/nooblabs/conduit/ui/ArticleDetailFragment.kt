@@ -5,19 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.nooblabs.conduit.OnArticleDetailListener
 import com.nooblabs.conduit.R
 import com.nooblabs.conduit.databinding.FragmentArticleDetailBinding
 import com.nooblabs.conduit.viewmodels.ArticleDetailViewModel
-import kotlinx.android.synthetic.main.fragment_article_detail.*
 
 
 class ArticleDetailFragment : Fragment() {
@@ -43,8 +38,8 @@ class ArticleDetailFragment : Fragment() {
 
         binding.articleDetailListener = object : OnArticleDetailListener {
             override fun onAuthorClicked(username: String) {
-                val action = UserFragmentDirections.actionGlobalUserDetails(username)
-                findNavController().navigate(action)
+//                val action = UserFragmentDirections.actionGlobalUserProfile(username)
+//                findNavController().navigate(action)
             }
         }
 
@@ -57,18 +52,6 @@ class ArticleDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         articleDetailViewModel.loadArticle(args.articleSlug)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-
-        (activity as AppCompatActivity).setSupportActionBar(articleDetailToolbar)
-        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        articleDetailToolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
-
     }
 
 

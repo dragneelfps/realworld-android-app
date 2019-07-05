@@ -6,8 +6,8 @@ import com.nooblabs.conduit.isNetworkAvailable
 import com.nooblabs.conduit.models.Article
 import com.nooblabs.conduit.models.Profile
 import com.nooblabs.conduit.models.User
-import com.nooblabs.conduit.service.api.TokenNotFound
 import com.nooblabs.conduit.service.api.UnauthorizedException
+import com.nooblabs.conduit.service.api.requests.ArticleCreateRequest
 import com.nooblabs.conduit.service.api.requests.LoginRequest
 import com.nooblabs.conduit.service.api.requests.RegistrationRequest
 import com.nooblabs.conduit.service.api.requests.UserUpdateRequest
@@ -155,6 +155,25 @@ class Service private constructor(val context: Context) {
     suspend fun toggleFollow(username: String, follow: Boolean): Profile {
         val token = getToken() ?: throw UnauthorizedException()
         return NetworkRepository.toggleFollow(token, username, follow)
+    }
+
+    suspend fun getTags(): List<String> {
+        return NetworkRepository.getTags()
+    }
+
+    suspend fun createArticle(
+        title: String,
+        description: String,
+        body: String,
+        tagList: List<String>
+    ): Article {
+        val token = getToken() ?: throw UnauthorizedException()
+        val request = ArticleCreateRequest(
+            article = ArticleCreateRequest.Article(
+                title, description, body, tagList
+            )
+        )
+        return NetworkRepository.createArticle(token, request)
     }
 
 }

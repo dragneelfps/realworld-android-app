@@ -9,4 +9,6 @@
     </string-array>
 
     <string name="favoritesCount">%s favorites</string>
+    <string name="navigation_drawer_open">Nav Open</string>
+    <string name="navigation_drawer_close">Nav Close</string>
 </resources>

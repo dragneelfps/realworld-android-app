@@ -54,7 +54,7 @@ interface API {
     fun createArticle(@Header("Authorization") token: String, @Body body: ArticleCreateRequest): Deferred<Response<ArticleResponse>>
 
     @PUT("articles/{slug}")
-    fun createArticle(@Header("Authorization") token: String, @Path("slug") slug: String, @Body body: ArticleUpdateRequest): Deferred<Response<ArticleResponse>>
+    fun updateArticle(@Header("Authorization") token: String, @Path("slug") slug: String, @Body body: ArticleUpdateRequest): Deferred<Response<ArticleResponse>>
 
     @DELETE("articles/{slug}")
     fun deleteArticle(@Header("Authorization") token: String, @Path("slug") slug: String)
